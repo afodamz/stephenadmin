@@ -1,0 +1,17 @@
+const MYSQL_USERNAME = process.env.MYSQL_USERNAME;
+const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD;
+const MYSQL_DATABASE = process.env.MYSQL_DATABASE;
+const MYSQL_HOST = process.env.MYSQL_HOST;
+const MYSQL_PORT = process.env.MYSQL_PORT;
+const PUBLIC_KEY = process.env.PUBLIC_KEY;
+const SECRET_KEY = process.env.SECRET_KEY;
+
+export {
+  MYSQL_USERNAME,
+  MYSQL_PASSWORD,
+  MYSQL_DATABASE,
+  MYSQL_HOST,
+  MYSQL_PORT,
+  PUBLIC_KEY,
+  SECRET_KEY,
+};
