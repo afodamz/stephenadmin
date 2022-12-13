@@ -54,6 +54,8 @@ AdminRoutes.post("/login", forwardAuthenticated, adminServices.loginSubmitServic
 AdminRoutes.get("/register", forwardAuthenticated, adminServices.registerService)
 AdminRoutes.post("/register", forwardAuthenticated, adminServices.registerSubmitService)
 // AdminRoutes.get("/dashboard", ensureAuthenticated, adminServices.dashboardService)
+AdminRoutes.get("/get-grills", forwardAuthenticated, adminServices.getGrillsService)
+AdminRoutes.get("/create-grills", forwardAuthenticated, adminServices.createGrillsService)
 AdminRoutes.get("/dashboard", forwardAuthenticated, adminServices.dashboardService)
 AdminRoutes.get("/logout", adminServices.logoutService)
 

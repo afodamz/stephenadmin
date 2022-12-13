@@ -24,6 +24,15 @@ export default class AdminServices {
     dashboardService = (req, res) => {
         res.render("dashboard");
     }
+    
+    getGrillsService = (req, res) => {
+        res.render("grills/get");
+    }
+    
+    createGrillsService = (req, res) => {
+        console.log("grills create")
+        res.render("grills/create");
+    }
 
     registerSubmitService = (req, res) => {
         var {
