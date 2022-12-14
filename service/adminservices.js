@@ -29,6 +29,54 @@ export default class AdminServices {
         res.render("grills/get");
     }
     
+    getSingleGrillsService = (req, res) => {
+        console.log("params", req.params.id)
+        const id = req.params.id;
+        var name;
+        if (req.user) {
+            name = req.user.firstName;
+          } else {
+            name = "guest";
+          }
+        res.render("grills/details");
+    }
+
+    updateGrillsService = (req, res) => {
+        console.log("params", req.params.id)
+        const id = req.params.id;
+        var name;
+        if (req.user) {
+            name = req.user.firstName;
+          } else {
+            name = "guest";
+          }
+        res.render("grills/update");
+    }
+
+    updateSubmitGrillsService = (req, res) => {
+        console.log("params", req.params.id)
+        const id = req.params.id;
+        var name;
+        if (req.user) {
+            name = req.user.firstName;
+          } else {
+            name = "guest";
+          }
+        res.render("grills/details");
+    }
+
+    deleteGrillsService = (req, res) => {
+        console.log("params", req.params.id)
+        const id = req.params.id;
+        var name;
+        if (req.user) {
+            name = req.user.firstName;
+          } else {
+            name = "guest";
+          }
+        res.render("grills/details");
+    }
+    
     createGrillsService = (req, res) => {
         console.log("grills create")
         res.render("grills/create");
