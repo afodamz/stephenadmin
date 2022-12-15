@@ -6,12 +6,12 @@
 					<div class="row">
 						<div class="col-md-6 col-sm-12">
 							<div class="title">
-								<h4>Form</h4>
+								<h4>Create Grill</h4>
 							</div>
 							<nav aria-label="breadcrumb" role="navigation">
 								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Form Basic</li>
+									<li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Create Grill</li>
 								</ol>
 							</nav>
 						</div>
@@ -19,12 +19,6 @@
 				</div>
 
 				<div class="pd-20 card-box mb-30">
-					<div class="clearfix">
-						<div class="pull-left">
-							<h4 class="text-blue h4">Form grid</h4>
-							<p class="mb-30">All bootstrap element classies</p>
-						</div>
-					</div>
 					<form>
 						<div class="row">
 							<div class="col-md-6 col-sm-12">
@@ -82,7 +76,7 @@
 								<div class="mb-30">
 									<label>Tags</label>
 									<input type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo"
-										data-role="tagsinput">
+										data-role="tagsinput" placeholder="add tags">
 								</div>
 							</div>
 							<div class="col-md-6 col-sm-12 mb-30">
@@ -92,32 +86,25 @@
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<div class="pd-ltr-20 xs-pd-20-10">
-								<div class="min-height-200px">
-									<div class="pd-20 card-box mb-30">
-										<div class="clearfix mb-20">
-											<div class="pull-left">
-												<h4 class="text-blue h4">Images</h4>
-											</div>
+						<div class="pd-ltr-20 xs-pd-20-10">
+									<div class="clearfix">
+										<div class="pull-left">
+											<label>Add Images</label>
 										</div>
-										<form class="dropzone" action="#" id="my-awesome-dropzone">
-											<div class="fallback">
-												<input type="file" name="file" />
-											</div>
-										</form>
 									</div>
-								</div>
-							</div>
+									<div class="dropzone" action="#" id="my-awesome-dropzone">
+										<div class="fallback">
+											<input type="file" name="file" />
+										</div>
+									</div>
+				
 						</div>
 					</form>
 				</div>
 
 			</div>
-			<div class="footer-wrap pd-20 mb-20 card-box">
-				DeskApp - Bootstrap 4 Admin Template By <a href="https://github.com/dropways" target="_blank">Ankit
-					Hingarajiya</a>
-			</div>
+			
 		</div>
 	</div>
+	
 	<%- include ("../partials/footer") %>

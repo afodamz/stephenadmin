@@ -25,6 +25,10 @@ export default class AdminServices {
         res.render("dashboard");
     }
     
+    getCategoriesService = (req, res) => {
+        res.render("categories/get");
+    }
+    
     getGrillsService = (req, res) => {
         res.render("grills/get");
     }

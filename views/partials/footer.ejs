@@ -1,3 +1,8 @@
+
+			<div class="footer-wrap pd-20 mb-20 card-box">
+				DeskApp - Bootstrap 4 Admin Template By <a href="https://github.com/dropways" target="_blank">Ankit
+					Hingarajiya</a>
+			</div>
 <script src="/vendors/scripts/core.js"></script>
 	<script src="/vendors/scripts/script.min.js"></script>
 	<script src="/vendors/scripts/process.js"></script>
@@ -17,7 +22,6 @@
 	<script src="/src/plugins/datatables/js/vfs_fonts.js"></script>
 	<!-- Datatable Setting js -->
 	<script src="/vendors/scripts/datatable-setting.js"></script>
-	<script src="/src/plugins/dropzone/src/dropzone.js"></script>
 	<!-- switchery js -->
 	<script src="/src/plugins/switchery/switchery.min.js"></script>
 	<!-- bootstrap-tagsinput js -->
@@ -26,6 +30,7 @@
 	<script src="/src/plugins/slick/slick.min.js"></script>
 	<!-- bootstrap-touchspin js -->
 	<script src="/src/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+	<script src="/vendors/scripts/advanced-components.js"></script>
 	<script>
 		jQuery(document).ready(function() {
 			jQuery('.product-slider').slick({
@@ -54,5 +59,17 @@
 		});
 	</script>
 	<script src="/vendors/scripts/dashboard.js"></script>
+	<script src="/src/plugins/dropzone/src/dropzone.js"></script>
+	<script>
+		Dropzone.autoDiscover = false;
+		$(".dropzone").dropzone({
+			addRemoveLinks: true,
+			removedfile: function(file) {
+				var name = file.name;
+				var _ref;
+				return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+			}
+		});
+	</script>
 </body>
 </html>
