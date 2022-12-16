@@ -1,4 +1,4 @@
-
+import passport from 'passport';
 
 export default class AdminServices {
 
@@ -11,8 +11,8 @@ export default class AdminServices {
 
     loginSubmitService = (req, res, next) => {
         passport.authenticate("local", {
-            successRedirect: `/admin`,
-            failureRedirect: "/login",
+            successRedirect: `/admin/dashboard`,
+            failureRedirect: "/admin/login",
             failureFlash: true,
         })(req, res, next);
     }
