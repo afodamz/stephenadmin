@@ -12,59 +12,31 @@ import {
 import { ensureAuthenticated, forwardAuthenticated } from '../config/auth.js';
 import express from "express";
 import passport from "passport";
-import bcrypt from "bcrypt";
 import AdminServices from '../service/adminservices.js'
+import DB from '../db/connection.js';
+
 
 const AdminRoutes = express.Router();
-const adminServices = new AdminServices();
-
-
-// const DB = mysql.createConnection({
-//     host: MYSQL_HOST,
-//     user: MYSQL_USERNAME,
-//     password: MYSQL_PASSWORD,
-//     database: MYSQL_DATABASE,
-//     port: MYSQL_PORT,
-//     waitForConnections: true,
-//     connectionLimit: 100,
-//     queueLimit: 0
-// });
-
-const DB = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "rooting",
-    database: "stephenfeeds",
-    port: "3306",
-    waitForConnections: true,
-    connectionLimit: 100,
-    queueLimit: 0
-});
-
-DB.connect((err) => {
-    if (err) {
-        console.log("DB error: ", err)
-    } else {
-        console.log("Mysql database connected successfully");
-    }
-});
+const adminServices = new AdminServices(DB);
 
 AdminRoutes.get("/login", forwardAuthenticated, adminServices.loginService)
 AdminRoutes.post("/login", forwardAuthenticated, adminServices.loginSubmitService)
+AdminRoutes.get("/forgot-password", forwardAuthenticated, adminServices.forgotPasswordService)
+AdminRoutes.post("/forgot-password", forwardAuthenticated, adminServices.forgotPasswordSubmitService)
 AdminRoutes.get("/register", forwardAuthenticated, adminServices.registerService)
 AdminRoutes.post("/register", forwardAuthenticated, adminServices.registerSubmitService)
 // AdminRoutes.get("/dashboard", ensureAuthenticated, adminServices.dashboardService)
-AdminRoutes.get("/get-grills", forwardAuthenticated, adminServices.getGrillsService)
-AdminRoutes.get("/get-grill/:id", forwardAuthenticated, adminServices.getSingleGrillsService)
-AdminRoutes.get("/update-grill/:id", forwardAuthenticated, adminServices.updateGrillsService)
-AdminRoutes.get("/delete-grill/:id", forwardAuthenticated, adminServices.deleteGrillsService)
-AdminRoutes.get("/create-grills", forwardAuthenticated, adminServices.createGrillsService)
-AdminRoutes.get("/categories", forwardAuthenticated, adminServices.getCategoriesService)
+AdminRoutes.get("/get-grills", ensureAuthenticated, adminServices.getGrillsService)
+AdminRoutes.get("/get-grill/:id", ensureAuthenticated, adminServices.getSingleGrillsService)
+AdminRoutes.get("/update-grill/:id", ensureAuthenticated, adminServices.updateGrillsService)
+AdminRoutes.get("/delete-grill/:id", ensureAuthenticated, adminServices.deleteGrillsService)
+AdminRoutes.get("/create-grills", ensureAuthenticated, adminServices.createGrillsService)
+AdminRoutes.get("/categories", ensureAuthenticated, adminServices.getCategoriesService)
 // AdminRoutes.get("/get-grill/:id", forwardAuthenticated, adminServices.getSingleGrillsService)
 // AdminRoutes.get("/update-grill/:id", forwardAuthenticated, adminServices.updateGrillsService)
 // AdminRoutes.get("/delete-grill/:id", forwardAuthenticated, adminServices.deleteGrillsService)
 // AdminRoutes.get("/create-grills", forwardAuthenticated, adminServices.createGrillsService)
-AdminRoutes.get("/dashboard", forwardAuthenticated, adminServices.dashboardService)
+AdminRoutes.get("/dashboard", ensureAuthenticated, adminServices.dashboardService)
 AdminRoutes.get("/logout", adminServices.logoutService)
 
 export default AdminRoutes;

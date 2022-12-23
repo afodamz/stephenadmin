@@ -5,9 +5,14 @@ import cookieParser from 'cookie-parser';
 // import expressLayouts from 'express-ejs-layouts';
 import session from 'express-session';
 import flash from 'connect-flash';
-import passport from 'passport';
 import AdminRoutes from "./router/admin.js";
+import passport from "passport";
+import bodyParser from 'body-parser'
 
+// require("./config/passport")(passport);
+import passportConfig from "./config/passport.js";
+
+passportConfig(passport);
 dotenv.config();
 
 const app = express();
@@ -17,22 +22,29 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 // app.use(expressLayouts);
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET,
+        secret: "r8q,+&1LM3)CD*zAGpx1xm{NeQhc;#",
         resave: true,
         saveUninitialized: true,
     })
 );
+
 // Passport middleware
-app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Passport middleware
+app.use(flash());
+
+app.use(bodyParser.urlencoded({ extended: false })) // parse application/x-www-form-urlencoded
+app.use(bodyParser.json()) // parse application/json
+
 
 // Global variables
 app.use(function (req, res, next) {
@@ -42,9 +54,6 @@ app.use(function (req, res, next) {
     next();
   });
 
-// app.use('/', (req, res) => {
-//     res.redirect("/admin/login");
-// });
 app.use("/admin", AdminRoutes);
 app.get("*", (req, res) => {
     // console.log("here done")

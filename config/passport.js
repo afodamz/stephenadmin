@@ -8,28 +8,15 @@ import {
 import mysql from 'mysql2';
 import LocalStrategy from 'passport-local';
 import bcrypt from 'bcrypt';
+import DB from '../db/connection.js'
 
-const DB = mysql.createConnection({
-    host: MYSQL_HOST,
-    user: MYSQL_USERNAME,
-    password: MYSQL_PASSWORD,
-    database: MYSQL_DATABASE,
-    port: MYSQL_PORT,
-});
-DB.connect((err) => {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log("MySQL database connected for user's login.");
-    }
-});
-
-module.exports = function (passport) {
+const passportConfig = (passport) =>{
     //LOCAL STRATEGY
     passport.use(
         new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-            const Q = `SELECT * FROM users WHERE email="${email}"`;
+            const Q = `SELECT * FROM user WHERE email="${email}"`;
             DB.query(Q, (err, result) => {
+                console.log("result", result)
                 if (err) throw err;
 
                 if (result.length === 0) {
@@ -56,9 +43,11 @@ module.exports = function (passport) {
     });
 
     passport.deserializeUser(function (id, done) {
-        const Q = `SELECT * FROM users WHERE id="${id}"`;
+        const Q = `SELECT * FROM user WHERE id="${id}"`;
         DB.query(Q, (err, result) => {
             done(err, result[0]);
         });
     });
 };
+
+export default passportConfig;
