@@ -31,6 +31,7 @@ AdminRoutes.get("/get-grill/:id", ensureAuthenticated, adminServices.getSingleGr
 AdminRoutes.get("/update-grill/:id", ensureAuthenticated, adminServices.updateGrillsService)
 AdminRoutes.get("/delete-grill/:id", ensureAuthenticated, adminServices.deleteGrillsService)
 AdminRoutes.get("/create-grills", ensureAuthenticated, adminServices.createGrillsService)
+AdminRoutes.post("/create-grills", ensureAuthenticated, adminServices.createGrillsSubmitService)
 AdminRoutes.get("/categories", ensureAuthenticated, adminServices.getCategoriesService)
 // AdminRoutes.get("/get-grill/:id", forwardAuthenticated, adminServices.getSingleGrillsService)
 // AdminRoutes.get("/update-grill/:id", forwardAuthenticated, adminServices.updateGrillsService)

@@ -19,40 +19,22 @@
 				</div>
 
 				<div class="pd-20 card-box mb-30">
-					<form>
+					<form action="/admin/create-grills" method="POST">
 						<div class="row">
 							<div class="col-md-6 col-sm-12">
 								<div class="form-group">
 									<label>Product Name</label>
-									<input type="text" class="form-control">
+									<input type="text" name="" class="form-control">
 								</div>
 							</div>
 							<div class="col-md-6 col-sm-12">
 								<div class="form-group">
 									<label>Categories</label>
-									<select class="custom-select2 form-control" multiple="multiple"
+									<select class="custom-select2 form-control" name="categories" multiple="multiple"
 										style="width: 100%;">
-										<optgroup label="Alaskan/Hawaiian Time Zone">
-											<option value="AK">Alaska</option>
-											<option value="HI">Hawaii</option>
-										</optgroup>
-										<optgroup label="Pacific Time Zone">
-											<option value="CA">California</option>
-											<option value="NV">Nevada</option>
-											<option value="OR">Oregon</option>
-											<option value="WA">Washington</option>
-										</optgroup>
-										<optgroup label="Mountain Time Zone">
-											<option value="AZ">Arizona</option>
-											<option value="CO">Colorado</option>
-											<option value="ID">Idaho</option>
-											<option value="MT">Montana</option>
-											<option value="NE">Nebraska</option>
-											<option value="NM">New Mexico</option>
-											<option value="ND">North Dakota</option>
-											<option value="UT">Utah</option>
-											<option value="WY">Wyoming</option>
-										</optgroup>
+											<option value="Fish">Fish Grills</option>
+											<option value="Meat">Meat Grills</option>
+											<option value="Vegetable">Vegetable Grills</option>
 									</select>
 								</div>
 							</div>
@@ -86,18 +68,28 @@
 								</div>
 							</div>
 						</div>
-						<div class="pd-ltr-20 xs-pd-20-10">
-									<div class="clearfix">
-										<div class="pull-left">
-											<label>Add Images</label>
-										</div>
-									</div>
-									<div class="dropzone" action="#" id="my-awesome-dropzone">
-										<div class="fallback">
-											<input type="file" name="file" />
-										</div>
-									</div>
-				
+						<div class="row">
+							<div class="col-md-12 col-sm-12 mb-30">
+								<div class="pd-ltr-20 xs-pd-20-10">
+											<div class="clearfix">
+												<div class="pull-left">
+													<label>Add Images</label>
+												</div>
+											</div>
+											<div class="dropzone" action="#" id="my-awesome-dropzone">
+												<div class="fallback">
+													<input type="file" name="file" />
+												</div>
+											</div>
+						
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12 col-sm-12 mb-30">
+								<button type="submit" class="btn btn-primary btn-lg float-right">Submit </button>
+							</div>
 						</div>
 					</form>
 				</div>

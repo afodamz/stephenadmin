@@ -5,7 +5,10 @@ import cookieParser from 'cookie-parser';
 // import expressLayouts from 'express-ejs-layouts';
 import session from 'express-session';
 import flash from 'connect-flash';
-import AdminRoutes from "./router/admin.js";
+import AuthRoutes from "./router/auth.js";
+import AdminPages from "./router/pages.js";
+import ProductRoutes from "./router/product.js";
+import CategoryRoutes from "./router/category.js";
 import passport from "passport";
 import bodyParser from 'body-parser'
 
@@ -54,7 +57,10 @@ app.use(function (req, res, next) {
     next();
   });
 
-app.use("/admin", AdminRoutes);
+app.use("/auth", AuthRoutes);
+app.use("/category", CategoryRoutes);
+app.use("/product", ProductRoutes);
+app.use("/admin", AdminPages);
 app.get("*", (req, res) => {
     // console.log("here done")
     // res.redirect("/");
