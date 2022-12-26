@@ -161,15 +161,9 @@
                                                             aria-hidden="true">×</button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form id="update-category" action="/category/update"
+                                                        <form id="update-category" action="/category/update/<%= product.id %>"
                                                             method="POST">
                                                             <div class="row text-left">
-                                                                <div style="display: none;" class="col-md-12 col-sm-12">
-                                                                    <div class="form-group">
-                                                                        <input required type="text" id="update-category-id"
-                                                                            name="categoryId" value="<%= product.id %>" class="form-control">
-                                                                    </div>
-                                                                </div>
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
                                                                         <label>Name</label>

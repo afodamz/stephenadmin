@@ -8,6 +8,8 @@ const CategoryRoutes = express.Router();
 const categoryServices = new CategoryServices(DB);
 
 CategoryRoutes.post("/create", ensureAuthenticated, categoryServices.createCategoryService)
+CategoryRoutes.post("/update/:id", ensureAuthenticated, categoryServices.updateCategoryService)
+CategoryRoutes.get("/delete/:id", ensureAuthenticated, categoryServices.deleteCategoryService)
 
 
 export default CategoryRoutes;
