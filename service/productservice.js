@@ -1,7 +1,8 @@
-import passport from 'passport';
-import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from 'uuid';
-import moment from 'moment'
+import path from 'path';
+
+
+const __dirname = path.resolve();
 
 export default class ProductServices {
 
@@ -10,26 +11,112 @@ export default class ProductServices {
     }
 
     deleteGrillsService = (req, res) => {
-        console.log("params", req.params.id)
-        const id = req.params.id;
-        var name;
-        if (req.user) {
-            name = req.user.firstName;
-        } else {
-            name = "guest";
-        }
-        res.render("grills/details");
-    }
+        var id = req.params.id
 
-    createCategoryService = (req, res) => {
-        console.log("grills create")
-        res.render("grills/create");
+        const Query = "UPDATE products SET is_deleted = ? WHERE id = ?";
+        const Options = [true, id];
+        this.DB.query(Query, Options, (err, result) => {
+            if (err) throw err;
+            if (result) {
+                req.flash(
+                    "success_msg",
+                    "Category Successfully added."
+                );
+                res.redirect("/admin/categories");
+            }
+        });
     }
 
     createGrillsSubmitService = (req, res) => {
-        console.log("body", req.body)
         var { name, price, old_price, tags, description,
-            images, categories } = req.body;
+            categories } = req.body;
+        // const { images } = req.files;
+        const images = req.files;
+        let errors = [];
+        console.log("body", categories)
+
+        // if (!name || !price || !old_price || !tags
+        //      || !images || !categories) {
+        //     errors.push({ msg: "Please enter required fields" })
+        // }
+
+        if (errors.length > 0) {
+            res.render("grills/create", {
+                errors,
+                name, price, old_price, tags, description,
+                images, categories
+            });
+        } else {
+            var savedfilePaths = [];
+            const keys = Object.keys(images)
+            for (let i = 0; i < keys.length; i++) {
+                var key = keys[i]
+                const image = images[key]
+                const fileName = new Date().getTime() + '_' + image.name;
+                const filePath = path.join(__dirname, 'public', '/grillsupload/')
+                image.mv(filePath + fileName, function (err) {
+                    if (err) {
+                        res.send(err);
+                    }
+                });
+                savedfilePaths.push(fileName);
+            }
+            const filePaths = JSON.stringify(savedfilePaths);
+
+            const Query = "INSERT INTO products SET ?";
+            const id = uuidv4();
+            const Options = {
+                id,
+                name,
+                price,
+                old_price,
+                tags,
+                description,
+                images: filePaths,
+                dateCreated: new Date()
+            };
+            this.DB.query(Query, Options, (err, result) => {
+                if (err) throw err;
+                if (result[0]) {
+                    return;
+                } else {
+                    // save in many to mant table
+                    const ProductCategoryQuery = "INSERT INTO product_categories SET ?";
+                    let ProductCategoryOptions;
+                    if (categories.length > 0) {
+                        ProductCategoryOptions = []
+                        for (let i = 0; i < categories.length; i++) {
+                            const createObject = {
+                                productId: id,
+                                categoriesId: categories[i],
+                            }
+                            ProductCategoryOptions.push(createObject)
+                        }
+                    } else {
+                        ProductCategoryOptions = {
+                            productId: Options['id'],
+                            categoriesId: category,
+                        }
+                    }
+                    this.DB.query(ProductCategoryQuery, ProductCategoryOptions, (err, result) => {
+                        if (err) throw err;
+                        if (result) {
+                            // req.flash(
+                            //     "success_msg",
+                            //     "You are now registered. Please log in to continue."
+                            // );
+                            res.redirect("/admin/create-grills");
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    updateGrillsSubmitService = (req, res) => {
+        var { name, price, old_price, tags, description,
+            categories } = req.body;
+        const { images } = req.files;
         let errors = [];
 
         if (!name || !price || old_price || tags
@@ -44,127 +131,54 @@ export default class ProductServices {
                 images, categories
             });
         } else {
-            const ProductQuery = "INSERT INTO user SET ?";
-            const ProductOptions = {
+            var savedfilePaths = [];
+            for (const image in images) {
+                const filePath = path.join(__dirname, 'public', '/grillsupload/')
+                image.mv(filePath + image.name, function (err) {
+                    if (err) {
+                        res.send(err);
+                    }
+                });
+                savedfilePaths.push(filePath);
+            }
+            const filePaths = JSON.stringify(savedfilePaths);
+
+            const Query = "INSERT INTO products SET ? where id = ? ";
+            const Options = {
                 id: uuidv4(),
-                first_name: firstName,
-                last_name: lastName,
-                username: userName,
-                email,
-                password,
+                name,
+                price,
+                old_price,
+                tags,
+                description,
+                images: filePaths,
                 dateCreated: new Date()
-                // dateCreated: moment().format("MM ddd, YYYY HH:mm:ss a")
             };
-            this.DB.query(Query, ProductOptions, (err, result) => {
+            this.DB.query(Query, Options, (err, result) => {
                 if (err) throw err;
                 if (result) {
-                    req.flash(
-                        "success_msg",
-                        "You are now registered. Please log in to continue."
-                    );
-                    res.redirect("/admin/login");
+                    // save in many to mant table
+                    const ProductCategoryQuery = "INSERT INTO productcategories SET ?";
+                    var ProductCategoryOptions = []
+                    for (const productCategory in categories) {
+                        ProductCategoryOptions.push({
+                            productId,
+                            categoryId: productCategory,
+                        })
+                    }
+                    this.DB.query(ProductCategoryQuery, ProductCategoryOptions, (err, result) => {
+                        if (err) throw err;
+                        if (result) {
+                            req.flash(
+                                "success_msg",
+                                "You are now registered. Please log in to continue."
+                            );
+                            res.redirect("/admin/login");
+                        }
+                    });
                 }
             });
         }
     }
-
-registerSubmitService = (req, res) => {
-    var {
-        firstName,
-        lastName,
-        userName,
-        email,
-        password,
-        password1
-    } = req.body;
-    let errors = [];
-
-    if (
-        !firstName ||
-        !lastName ||
-        !userName ||
-        !email ||
-        !password ||
-        !password1
-    ) {
-        errors.push({ msg: "Please enter all fields" });
-    }
-
-    if (password != password1) {
-        errors.push({ msg: "Passwords do not match" });
-    }
-
-    if (password.length < 6) {
-        errors.push({ msg: "Password must be at least 6 characters" });
-    }
-
-    if (errors.length > 0) {
-        res.render("register", {
-            errors,
-            firstName,
-            lastName,
-            userName,
-            email,
-            password,
-            password1,
-            name: "guest",
-        });
-    } else {
-        const Q = `SELECT * FROM user WHERE email = "${email}"`;
-        this.DB.query(Q, (err, result) => {
-            if (err) throw err;
-            if (result[0]) {
-                errors.push({ msg: "Email already exists" });
-                res.render("register", {
-                    errors,
-                    firstName,
-                    lastName,
-                    userName,
-                    email,
-                    password,
-                    password1,
-                    name: "guest",
-                });
-                return;
-            } else {
-                bcrypt.genSalt(10, (err, salt) => {
-                    if (err) throw err;
-                    bcrypt.hash(password, salt, (err, hash) => {
-                        if (err) throw err;
-                        password = hash;
-                        const Query = "INSERT INTO user SET ?";
-                        const Options = {
-                            id: uuidv4(),
-                            first_name: firstName,
-                            last_name: lastName,
-                            username: userName,
-                            email,
-                            password,
-                            dateCreated: new Date()
-                            // dateCreated: moment().format("MM ddd, YYYY HH:mm:ss a")
-                        };
-                        this.DB.query(Query, Options, (err, result) => {
-                            if (err) throw err;
-                            if (result) {
-                                req.flash(
-                                    "success_msg",
-                                    "You are now registered. Please log in to continue."
-                                );
-                                res.redirect("/admin/login");
-                            }
-                        });
-                    });
-                });
-            }
-        });
-    }
-}
-
-logoutService = (req, res) => {
-    req.session.destroy(function (err) {
-        // req.flash("success_msg", "You are logged out");
-        res.redirect('/admin/login'); //Inside a callback… bulletproof!
-    });
-}
 
 }

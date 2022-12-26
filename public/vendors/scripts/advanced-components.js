@@ -20,12 +20,20 @@
 			maxboostedstep: 10,
 			postfix: '%'
 		});
-		$("input[name='demo2']").TouchSpin({
-			min: -1000000000,
+		$("input[name='old_price']").TouchSpin({
+			min: 0,
 			max: 1000000000,
 			stepinterval: 50,
 			maxboostedstep: 10000000,
 			prefix: '$'
+		});
+		$("input[name='price']").TouchSpin({
+			min: 0,
+			max: 1000000000,
+			stepinterval: 50,
+			maxboostedstep: 10000000,
+			prefix: '$'
+			// prefix: '₦'
 		});
 		$("input[name='demo3_22']").TouchSpin({
 			initval: 40

@@ -19,22 +19,22 @@
 				</div>
 
 				<div class="pd-20 card-box mb-30">
-					<form action="/admin/create-grills" method="POST">
+					<form action="/product/create-grills" method="POST" enctype="multipart/form-data">
 						<div class="row">
 							<div class="col-md-6 col-sm-12">
 								<div class="form-group">
 									<label>Product Name</label>
-									<input type="text" name="" class="form-control">
+									<input type="text" id="productName" name="name" class="form-control">
 								</div>
 							</div>
 							<div class="col-md-6 col-sm-12">
 								<div class="form-group">
 									<label>Categories</label>
-									<select class="custom-select2 form-control" name="categories" multiple="multiple"
+									<select id="productCategories" class="custom-select2 form-control" name="categories" multiple="multiple"
 										style="width: 100%;">
-											<option value="Fish">Fish Grills</option>
-											<option value="Meat">Meat Grills</option>
-											<option value="Vegetable">Vegetable Grills</option>
+										<% allCategories.forEach(function(product){ %>
+											<option value="<%= product.id %>"><%= product.name %></option>
+											<% }); %>
 									</select>
 								</div>
 							</div>
@@ -43,60 +43,135 @@
 							<div class="col-md-6 col-sm-12">
 								<div class="form-group">
 									<label>Old Price</label>
-									<input id="demo2" type="text" value="0" name="demo2">
+									<input id="demo2" type="text" value="0" name="old_price">
 								</div>
 							</div>
 							<div class="col-md-6 col-sm-12">
 								<div class="form-group">
 									<label>New Price</label>
-									<input id="demo2" type="text" value="0" name="demo2">
+									<input id="demo2" id="productPrice" type="text" value="0" name="price">
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-6 col-sm-12 mb-30">
-								<div class="mb-30">
+								<div class="form-group">
 									<label>Tags</label>
-									<input type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo"
-										data-role="tagsinput" placeholder="add tags">
+									<input class="tag-input" type="text" id="productTags" value="" name="tags" data-role="tagsinput"
+										placeholder="add tags">
 								</div>
 							</div>
 							<div class="col-md-6 col-sm-12 mb-30">
 								<div class="form-group">
 									<label>Description</label>
-									<textarea class="form-control"></textarea>
+									<textarea name="description" class="form-control"></textarea>
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12 col-sm-12 mb-30">
 								<div class="pd-ltr-20 xs-pd-20-10">
-											<div class="clearfix">
-												<div class="pull-left">
-													<label>Add Images</label>
-												</div>
-											</div>
-											<div class="dropzone" action="#" id="my-awesome-dropzone">
-												<div class="fallback">
-													<input type="file" name="file" />
-												</div>
-											</div>
-						
+									<div class="clearfix">
+										<div class="pull-left">
+											<label>Add Images</label>
+										</div>
+									</div>
+									<div class="dropzone" action="#" id="my-awesome-dropzone">
+										<div class="fallback">
+											<input type="file" name="images" />
+										</div>
+									</div>
+
 								</div>
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="col-md-12 col-sm-12 mb-30">
-								<button type="submit" class="btn btn-primary btn-lg float-right">Submit </button>
+								<button type="submit" id="submit-all" class="btn btn-primary btn-lg float-right">Submit
+								</button>
 							</div>
 						</div>
 					</form>
 				</div>
 
 			</div>
-			
+
 		</div>
 	</div>
-	
+
 	<%- include ("../partials/footer") %>
+		<script>
+			// $('#submit-all').prop('disabled', true);
+
+			var name = $("input#productName" ).val()
+			var price = $("input#productPrice" ).val()
+			var tags = $("input#productTags" ).val()
+			var categories = $("input#productCategories" ).val()
+			var file = $("input#email" ).val();
+			console.log("data here",name, price, tags, categories)
+			if (name){
+				$('#submit-all').prop('disabled', true);
+			}
+
+			Dropzone.autoDiscover = false;
+			$(".dropzone").dropzone({
+				addRemoveLinks: true,
+				url: '/product/create-grills',
+				maxFilesize: 2000,
+				autoProcessQueue: false,
+				uploadMultiple: true,
+				parallelUploads: 100,
+				maxFiles: 10,
+				acceptedFiles: '.png,.jpg,.pdf',
+				dictDefaultMessage: 'Upload your files here',
+				createImageThumbnails: false,
+				removedfile: function (file) {
+					var name = file.name;
+					var _ref;
+					return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+				},
+				init: function () {
+					dzClosure = this;
+
+					// for Dropzone to process the queue (instead of default form behavior):
+					document.getElementById("submit-all").addEventListener("click", function (e) {
+						e.preventDefault();
+						e.stopPropagation();
+						dzClosure.processQueue();
+					});
+
+					//send all the form data along with the files:
+					this.on("sendingmultiple", function (file, xhr, formData) {
+						// form.append("data", jQuery("#additional-data").val());
+
+						var data = $('form').serializeArray();
+						$.each(data, function (key, el) {
+							formData.append(el.name, el.value);
+						});
+					});
+
+					this.on('error', function (files, response) {
+						alert(response);
+					});
+
+
+
+					// Update selector to match your button
+					// $("#button").click(function (e) {
+					// 	e.preventDefault();
+					// 	myDropzone.processQueue();
+					// });
+
+					// this.on('sending', function (file, xhr, formData) {
+						// formData = new FormData(document.getElementById('dropform'));
+					// 	// Append all form inputs to the formData Dropzone will POST
+					// 	var data = $('#frmTarget').serializeArray();
+					// 	$.each(data, function (key, el) {
+					// 		formData.append(el.name, el.value);
+					// 	});
+					// });
+				},
+
+			});
+		</script>

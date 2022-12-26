@@ -11,6 +11,7 @@ import ProductRoutes from "./router/product.js";
 import CategoryRoutes from "./router/category.js";
 import passport from "passport";
 import bodyParser from 'body-parser'
+import fileUpload from 'express-fileupload'
 
 // require("./config/passport")(passport);
 import passportConfig from "./config/passport.js";
@@ -21,6 +22,14 @@ dotenv.config();
 const app = express();
 const __dirname = path.resolve();
 
+app.use(
+    fileUpload({
+        limits: {
+            fileSize: 10000000, // Around 10MB
+        },
+        abortOnLimit: true,
+    })
+);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 // app.use(expressLayouts);

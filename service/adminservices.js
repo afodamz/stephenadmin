@@ -35,9 +35,9 @@ export default class AdminServices {
 
     getCategoriesService = (req, res, DB) => {
         const { name } = req.query;
-        const categoriesQuery = `SELECT * FROM category WHERE is_deleted is false`;
+        const Query = `SELECT * FROM category WHERE is_deleted is false`;
         // const categoriesQuery = `SELECT * FROM category WHERE name = ${name} and is_deleted is false`;
-        this.DB.query(categoriesQuery, (err, allCategories) => {
+        this.DB.query(Query, (err, allCategories) => {
             if (err) throw err;
             res.render("categories/get", {
                 allCategories,
@@ -47,7 +47,15 @@ export default class AdminServices {
     }
 
     getGrillsService = (req, res) => {
-        res.render("grills/get");
+        const Query = `SELECT * FROM products WHERE is_deleted is false`;
+        // const categoriesQuery = `SELECT * FROM category WHERE name = ${name} and is_deleted is false`;
+        this.DB.query(Query, (err, allProdcts) => {
+            if (err) throw err;
+            res.render("grills/get", {
+                allProdcts,
+                moment
+            });
+        });
     }
 
     forgotPasswordService = (req, res) => {
@@ -112,8 +120,14 @@ export default class AdminServices {
     }
 
     createGrillsService = (req, res) => {
-        console.log("grills create")
-        res.render("grills/create");
+        const Query = `SELECT * FROM category WHERE is_deleted is false`;
+        this.DB.query(Query, (err, allCategories) => {
+            if (err) throw err;
+            res.render("grills/create", {
+                allCategories,
+                moment
+            });
+        });
     }
 
     createGrillsSubmitService = (req, res) => {
