@@ -7,6 +7,7 @@ import session from 'express-session';
 import flash from 'connect-flash';
 import AuthRoutes from "./router/auth.js";
 import AdminPages from "./router/pages.js";
+import PublicUrls from "./router/public.js";
 import ProductRoutes from "./router/product.js";
 import CategoryRoutes from "./router/category.js";
 import passport from "passport";
@@ -66,10 +67,34 @@ app.use(function (req, res, next) {
     next();
   });
 
+  app.use((req, res, next) => {
+    // Website you wish to allow to connect
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  
+    // Request methods you wish to allow
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET"
+    );
+  
+    // Request headers you wish to allow
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With,content-type"
+    );
+  
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader("Access-Control-Allow-Credentials", true);
+  
+    next();
+  });
+
 app.use("/auth", AuthRoutes);
 app.use("/category", CategoryRoutes);
 app.use("/product", ProductRoutes);
 app.use("/admin", AdminPages);
+app.use("/", PublicUrls);
 app.get("*", (req, res) => {
     // console.log("here done")
     // res.redirect("/");

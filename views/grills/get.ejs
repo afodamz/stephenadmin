@@ -11,14 +11,14 @@
 							</div>
 							<nav aria-label="breadcrumb" role="navigation">
 								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+									<li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
 									<li class="breadcrumb-item active" aria-current="page">DataTable</li>
 								</ol>
 							</nav>
 						</div>
 						<div class="col-md-6 col-sm-12 text-right">
 							<div class="dropdown">
-								<a class="btn btn-primary" href="#" role="button">
+								<a class="btn btn-primary" href="/admin/create-grills" role="button">
 									Create Grill
 								</a>
 							</div>
@@ -27,7 +27,7 @@
 				</div>
 				<!-- Export Datatable start -->
 				<div class="card-box mb-30">
-                    <div class="pd-20">
+					<div class="pd-20">
 						<!-- <h4 class="text-blue h4">Data Table Simple</h4> -->
 						<!-- <p class="mb-0">you can find more options <a class="text-primary" href="https://datatables.net/" target="_blank">Click Here</a></p> -->
 					</div>
@@ -37,149 +37,64 @@
 								<tr>
 									<th class="table-plus datatable-nosort">Product</th>
 									<th>Name</th>
-									<th>Color</th>
-									<th>Size</th>
+									<th>Categories</th>
+									<th>Old Price</th>
 									<th>Price</th>
-									<th>Oty</th>
+									<th>Tags</th>
 									<th class="datatable-nosort">Action</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td class="table-plus">
-										<img src="/vendors/images/product-1.jpg" width="70" height="70" alt="">
-									</td>
-									<td>
+								<% allProdcts.forEach(function(product){ %>
+									<tr>
+										<td class="table-plus">
+											<img src="/grillsupload/<%= product.images %>" width="70" height="70" alt="">
+										</td>
+										<td>
+											<%= product.name %>
+										</td>
+										<!-- <td>
 										<h5 class="font-16">Shirt</h5>
 										by John Doe
-									</td>
-									<td>Black</td>
-									<td>M</td>
-									<td>$1000</td>
-									<td>1</td>
-									<td>
-										<div class="dropdown">
-											<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-												<i class="dw dw-more"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-												<a class="dropdown-item" href="/admin/get-grill/2"><i class="dw dw-eye"></i> View</a>
-												<a class="dropdown-item" href="/admin/update-grill/2"><i class="dw dw-edit2"></i> Edit</a>
-												<a class="dropdown-item" href="/admin/delete-grill/2"><i class="dw dw-delete-3"></i> Delete</a>
+									</td> -->
+										<td>
+											<% product.categories.forEach(function(category){ %>
+												<%= category.name %>,
+											<% }); %>
+										</td>
+										<td>
+											$<%= product.old_price %>
+										</td>
+										<td>$<%= product.price %>
+										</td>
+										<td>
+											<%= product.tags %>
+										</td>
+										<td>
+											<div class="dropdown">
+												<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
+													href="#" role="button" data-toggle="dropdown">
+													<i class="dw dw-more"></i>
+												</a>
+												<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+													<a class="dropdown-item" href="/admin/get-grill/<%= product.id %>"><i
+															class="dw dw-eye"></i> View</a>
+													<a class="dropdown-item" href="/admin/update-grill/<%= product.id %>"><i
+															class="dw dw-edit2"></i> Edit</a>
+													<a class="dropdown-item" href="/admin/delete-grill/<%= product.id %>"><i
+															class="dw dw-delete-3"></i> Delete</a>
+												</div>
 											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="table-plus">
-										<img src="/vendors/images/product-2.jpg" width="70" height="70" alt="">
-									</td>
-									<td>
-										<h5 class="font-16">Boots</h5>
-										by Lea R. Frith
-									</td>
-									<td>brown</td>
-									<td>9UK</td>
-									<td>$900</td>
-									<td>1</td>
-									<td>
-										<div class="dropdown">
-											<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-												<i class="dw dw-more"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-												<a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-												<a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-												<a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="table-plus">
-										<img src="/vendors/images/product-3.jpg" width="70" height="70" alt="">
-									</td>
-									<td>
-										<h5 class="font-16">Hat</h5>
-										by Erik L. Richards
-									</td>
-									<td>Orange</td>
-									<td>M</td>
-									<td>$100</td>
-									<td>4</td>
-									<td>
-										<div class="dropdown">
-											<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-												<i class="dw dw-more"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-												<a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-												<a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-												<a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="table-plus">
-										<img src="/vendors/images/product-4.jpg" width="70" height="70" alt="">
-									</td>
-									<td>
-										<h5 class="font-16">Long Dress</h5>
-										by Renee I. Hansen
-									</td>
-									<td>Gray</td>
-									<td>L</td>
-									<td>$1000</td>
-									<td>1</td>
-									<td>
-										<div class="dropdown">
-											<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-												<i class="dw dw-more"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-												<a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-												<a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-												<a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="table-plus">
-										<img src="/vendors/images/product-5.jpg" width="70" height="70" alt="">
-									</td>
-									<td>
-										<h5 class="font-16">Blazer</h5>
-										by Vicki M. Coleman
-									</td>
-									<td>Blue</td>
-									<td>M</td>
-									<td>$1000</td>
-									<td>1</td>
-									<td>
-										<div class="dropdown">
-											<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-												<i class="dw dw-more"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-												<a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-												<a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-												<a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-											</div>
-										</div>
-									</td>
-								</tr>
+										</td>
+									</tr>
+									<% }); %>
 							</tbody>
 						</table>
 					</div>
 				</div>
 				<!-- Export Datatable End -->
 			</div>
-			<div class="footer-wrap pd-20 mb-20 card-box">
-				DeskApp - Bootstrap 4 Admin Template By <a href="https://github.com/dropways" target="_blank">Ankit Hingarajiya</a>
-			</div>
 		</div>
 	</div>
-	
-<%- include ("../partials/footer")  %>
+
+	<%- include ("../partials/footer") %>

@@ -30,15 +30,8 @@ export default class ProductServices {
     createGrillsSubmitService = (req, res) => {
         var { name, price, old_price, tags, description,
             categories } = req.body;
-        // const { images } = req.files;
         const images = req.files;
         let errors = [];
-        console.log("body", categories)
-
-        // if (!name || !price || !old_price || !tags
-        //      || !images || !categories) {
-        //     errors.push({ msg: "Please enter required fields" })
-        // }
 
         if (errors.length > 0) {
             res.render("grills/create", {
@@ -52,7 +45,7 @@ export default class ProductServices {
             for (let i = 0; i < keys.length; i++) {
                 var key = keys[i]
                 const image = images[key]
-                const fileName = new Date().getTime() + '_' + image.name;
+                const fileName = new Date().getTime() + '.' + image.name.split('.').pop();
                 const filePath = path.join(__dirname, 'public', '/grillsupload/')
                 image.mv(filePath + fileName, function (err) {
                     if (err) {

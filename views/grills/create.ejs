@@ -30,10 +30,12 @@
 							<div class="col-md-6 col-sm-12">
 								<div class="form-group">
 									<label>Categories</label>
-									<select id="productCategories" class="custom-select2 form-control" name="categories" multiple="multiple"
-										style="width: 100%;">
+									<select id="productCategories" class="custom-select2 form-control" name="categories"
+										multiple="multiple" style="width: 100%;">
 										<% allCategories.forEach(function(product){ %>
-											<option value="<%= product.id %>"><%= product.name %></option>
+											<option value="<%= product.id %>">
+												<%= product.name %>
+											</option>
 											<% }); %>
 									</select>
 								</div>
@@ -57,8 +59,8 @@
 							<div class="col-md-6 col-sm-12 mb-30">
 								<div class="form-group">
 									<label>Tags</label>
-									<input class="tag-input" type="text" id="productTags" value="" name="tags" data-role="tagsinput"
-										placeholder="add tags">
+									<input class="tag-input" type="text" id="productTags" value="" name="tags"
+										data-role="tagsinput" placeholder="add tags">
 								</div>
 							</div>
 							<div class="col-md-6 col-sm-12 mb-30">
@@ -104,13 +106,13 @@
 		<script>
 			// $('#submit-all').prop('disabled', true);
 
-			var name = $("input#productName" ).val()
-			var price = $("input#productPrice" ).val()
-			var tags = $("input#productTags" ).val()
-			var categories = $("input#productCategories" ).val()
-			var file = $("input#email" ).val();
-			console.log("data here",name, price, tags, categories)
-			if (name){
+			var name = $("input#productName").val()
+			var price = $("input#productPrice").val()
+			var tags = $("input#productTags").val()
+			var categories = $("input#productCategories").val()
+			var file = $("input#email").val();
+			console.log("data here", name, price, tags, categories)
+			if (name) {
 				$('#submit-all').prop('disabled', true);
 			}
 
@@ -155,16 +157,14 @@
 						alert(response);
 					});
 
-
-
-					// Update selector to match your button
-					// $("#button").click(function (e) {
-					// 	e.preventDefault();
-					// 	myDropzone.processQueue();
-					// });
+					this.on('success', function (files, response) {
+						console.log("success")
+						console.log(response)
+						alert(response);
+					});
 
 					// this.on('sending', function (file, xhr, formData) {
-						// formData = new FormData(document.getElementById('dropform'));
+					// formData = new FormData(document.getElementById('dropform'));
 					// 	// Append all form inputs to the formData Dropzone will POST
 					// 	var data = $('#frmTarget').serializeArray();
 					// 	$.each(data, function (key, el) {

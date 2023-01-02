@@ -8,6 +8,7 @@ const ProductRoutes = express.Router();
 const productServices = new AdminServices(DB);
 
 ProductRoutes.post("/create-grills", ensureAuthenticated, productServices.createGrillsSubmitService)
+ProductRoutes.post("/update-grill/:id", ensureAuthenticated, productServices.updateGrillsSubmitService)
 
 
 export default ProductRoutes;

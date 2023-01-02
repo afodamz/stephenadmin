@@ -10,7 +10,7 @@
                         </div>
                         <nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Product Detail</li>
                             </ol>
                         </nav>
@@ -52,25 +52,10 @@
                         </div>
                         <div class="col-lg-6 col-md-12 col-sm-12">
                             <div class="product-detail-desc pd-20 card-box height-100-p">
-                                <h4 class="mb-20 pt-20">Gufram Bounce Black</h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                <h4 class="mb-20 pt-20"><%= product.name %></h4>
+                                <p><%= product.description %>.</p>
                                 <div class="price">
-                                    <del>$55.5</del><ins>$49.5</ins>
-                                </div>
-                                <div class="mx-w-150">
-                                    <div class="form-group">
-                                        <label class="text-blue">quantity</label>
-                                        <input id="demo3_22" type="text" value="1" name="demo3_22">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-6">
-                                        <a href="#" class="btn btn-primary btn-block">Add To Cart</a>
-                                    </div>
-                                    <div class="col-md-6 col-6">
-                                        <a href="#" class="btn btn-outline-primary btn-block">Buy Now</a>
-                                    </div>
+                                    <del>$<%= product.old_price %></del><ins>$<%= product.price %></ins>
                                 </div>
                             </div>
                         </div>
@@ -118,9 +103,6 @@
                     </ul>
                 </div> -->
             </div>
-        </div>
-        <div class="footer-wrap pd-20 mb-20 card-box">
-            DeskApp - Bootstrap 4 Admin Template By <a href="https://github.com/dropways" target="_blank">Ankit Hingarajiya</a>
         </div>
     </div>
 </div>
