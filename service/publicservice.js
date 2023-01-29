@@ -36,6 +36,4 @@ where products.is_deleted=false AND category.is_deleted=false GROUP BY products.
         });
     }
 
-    
-
 }

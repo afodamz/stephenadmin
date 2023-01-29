@@ -10,6 +10,7 @@ import AdminPages from "./router/pages.js";
 import PublicUrls from "./router/public.js";
 import ProductRoutes from "./router/product.js";
 import CategoryRoutes from "./router/category.js";
+import ClientRoutes from "./router/client.js";
 import passport from "passport";
 import bodyParser from 'body-parser'
 import fileUpload from 'express-fileupload'
@@ -93,6 +94,9 @@ app.use(function (req, res, next) {
 app.use("/auth", AuthRoutes);
 app.use("/category", CategoryRoutes);
 app.use("/product", ProductRoutes);
+app.use("/product", ProductRoutes);
+app.use("/client", ClientRoutes);
+app.use("/admin", AdminPages);
 app.use("/admin", AdminPages);
 app.use("/", PublicUrls);
 app.get("*", (req, res) => {

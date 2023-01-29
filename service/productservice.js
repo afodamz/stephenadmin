@@ -28,7 +28,7 @@ export default class ProductServices {
     }
 
     createGrillsSubmitService = (req, res) => {
-        var { name, price, old_price, tags, description,
+        var { name, price, old_price, tags, description, status,
             categories } = req.body;
         const images = req.files;
         let errors = [];
@@ -36,7 +36,7 @@ export default class ProductServices {
         if (errors.length > 0) {
             res.render("grills/create", {
                 errors,
-                name, price, old_price, tags, description,
+                name, price, old_price, tags, description, status,
                 images, categories
             });
         } else {
@@ -65,6 +65,7 @@ export default class ProductServices {
                 old_price,
                 tags,
                 description,
+                status,
                 images: filePaths,
                 dateCreated: new Date()
             };
@@ -107,20 +108,20 @@ export default class ProductServices {
     }
 
     updateGrillsSubmitService = (req, res) => {
-        var { name, price, old_price, tags, description,
+        var { name, price, old_price, tags, description, status,
             categories } = req.body;
         const { images } = req.files;
         let errors = [];
 
         if (!name || !price || old_price || tags
-            || !description || !images || !categories) {
+            || !description || !images || !categories || !status ) {
             errors.push({ msg: "Please enter required fields" })
         }
 
         if (errors.length > 0) {
             res.render("grills/create", {
                 errors,
-                name, price, old_price, tags, description,
+                name, price, old_price, tags, description, status,
                 images, categories
             });
         } else {
@@ -144,6 +145,7 @@ export default class ProductServices {
                 old_price,
                 tags,
                 description,
+                status,
                 images: filePaths,
                 dateCreated: new Date()
             };
