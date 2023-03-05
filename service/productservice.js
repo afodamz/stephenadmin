@@ -33,6 +33,11 @@ export default class ProductServices {
         const images = req.files;
         let errors = [];
 
+        if (!name || !price || old_price || tags
+            || !description || !images || !categories || !status ) {
+            errors.push({ msg: "Please enter required fields" })
+        }
+
         if (errors.length > 0) {
             res.render("grills/create", {
                 errors,
@@ -95,11 +100,17 @@ export default class ProductServices {
                     this.DB.query(ProductCategoryQuery, ProductCategoryOptions, (err, result) => {
                         if (err) throw err;
                         if (result) {
+                            res.json({
+                                success: true,
+                                datatype: 'ALL PRODUCTS',
+                                data: result,
+                                message: "Grill created successfully"
+                            })
                             // req.flash(
                             //     "success_msg",
                             //     "You are now registered. Please log in to continue."
                             // );
-                            res.redirect("/admin/create-grills");
+                            // res.redirect("/admin/create-grills");
                         }
                     });
                 }
@@ -108,17 +119,12 @@ export default class ProductServices {
     }
 
     updateGrillsSubmitService = (req, res) => {
-        var { name, price, old_price, tags, description, status,
+        var { id, name, price, old_price, tags, description, status,
             categories } = req.body;
         const { images } = req.files;
         let errors = [];
-
-        if (!name || !price || old_price || tags
-            || !description || !images || !categories || !status ) {
-            errors.push({ msg: "Please enter required fields" })
-        }
-
-        if (errors.length > 0) {
+        
+        if (!id) {
             res.render("grills/create", {
                 errors,
                 name, price, old_price, tags, description, status,
@@ -139,7 +145,7 @@ export default class ProductServices {
 
             const Query = "INSERT INTO products SET ? where id = ? ";
             const Options = {
-                id: uuidv4(),
+                id,
                 name,
                 price,
                 old_price,

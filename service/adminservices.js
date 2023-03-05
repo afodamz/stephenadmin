@@ -46,7 +46,7 @@ export default class AdminServices {
 
     getCategoriesService = (req, res, DB) => {
         const { name } = req.query;
-        const Query = `SELECT * FROM category WHERE is_deleted is false`;
+        const Query = `SELECT * FROM category WHERE is_deleted is false order by dateCreated DESC`;
         // const categoriesQuery = `SELECT * FROM category WHERE name = ${name} and is_deleted is false`;
         this.DB.query(Query, (err, allCategories) => {
             if (err) throw err;
