@@ -97,7 +97,6 @@ app.use("/product", ProductRoutes);
 app.use("/product", ProductRoutes);
 app.use("/client", ClientRoutes);
 app.use("/admin", AdminPages);
-app.use("/admin", AdminPages);
 app.use("/", PublicUrls);
 app.get("*", (req, res) => {
     // console.log("here done")

@@ -73,6 +73,34 @@ where products.is_deleted=false AND category.is_deleted=false GROUP BY products.
         });
     }
 
+    getOrderDetailsService = (req, res) => {
+        const Query = `SELECT orders.*, JSON_ARRAYAGG(JSON_OBJECT('id', category.id, 'name', category.name)) as categories FROM products 
+inner JOIN product_categories ON product_categories.productId=products.id
+inner JOIN category ON category.id= product_categories.categoriesId 
+where products.is_deleted=false AND category.is_deleted=false GROUP BY products.id ORDER BY products.dateCreated DESC
+`;
+        this.DB.query(Query, (err, allProdcts) => {
+            if (err) throw err;
+            console.log("allProdcts", allProdcts)
+            res.render("orders/get", {
+                allProdcts,
+                moment
+            });
+        });
+    }
+
+    getOrdersService = (req, res) => {
+        const Query = `SELECT orders.* from orders where orders.is_deleted=false ORDER BY orders.dateCreated DESC`;
+        this.DB.query(Query, (err, allOrders) => {
+            if (err) throw err;
+            console.log("allOrders", allOrders)
+            res.render("orders/get", {
+                allOrders,
+                moment
+            });
+        });
+    }
+
     forgotPasswordService = (req, res) => {
         res.render("forgot-password");
     }
