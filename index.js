@@ -11,6 +11,8 @@ import PublicUrls from "./router/public.js";
 import ProductRoutes from "./router/product.js";
 import CategoryRoutes from "./router/category.js";
 import ClientRoutes from "./router/client.js";
+import CartRoutes from "./router/cart.js";
+import WishlistRoutes from "./router/wishlist.js";
 import passport from "passport";
 import bodyParser from 'body-parser'
 import fileUpload from 'express-fileupload'
@@ -94,9 +96,10 @@ app.use(function (req, res, next) {
 app.use("/auth", AuthRoutes);
 app.use("/category", CategoryRoutes);
 app.use("/product", ProductRoutes);
-app.use("/product", ProductRoutes);
 app.use("/client", ClientRoutes);
 app.use("/admin", AdminPages);
+app.use("/cart", CartRoutes);
+app.use("/wishlist", WishlistRoutes);
 app.use("/", PublicUrls);
 app.get("*", (req, res) => {
     // console.log("here done")
