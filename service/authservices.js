@@ -35,30 +35,37 @@ export default class AdminServices {
             this.DB.query(Q, (err, result) => {
                 if (err) throw err;
                 let foundUser = result[0];
-                console.log("foundUser", foundUser)
+                console.log('foundUser', foundUser)
                 if (foundUser) {
-                    bcrypt.compare(password, foundUser.password, (err, data) => {
-                        //if error than throw error
-                        if (err) throw err
-                        if (data) {
-                            const { accessToken, refreshToken } = generateTokens(foundUser);
-                            return res.status(200).json({
-                                error: false,
-                                accessToken,
-                                refreshToken,
-                                msg: "Login success"
-                            })
-                        } else {
-                            return res.status(401).json({ msg: "Invalid credencials" })
-                        }
-
-                    })
+                    try {
+                        bcrypt.compare(password, foundUser.password, (err, data) => {
+                            //if error than throw error
+                            if (err) return res.status(400).json({ msg: "Invalid credentials" })
+                            if (data) {
+                                const { accessToken, refreshToken } = generateTokens(foundUser);
+                                delete foundUser.password
+                                return res.status(200).json({
+                                    error: false,
+                                    user: foundUser,
+                                    tokens: {
+                                        accessToken,
+                                        refreshToken,
+                                    },
+                                    msg: "Login success"
+                                })
+                            } else {
+                                return res.status(400).json({ msg: "Invalid credentials" })
+                            }
+                        })
+                    } catch (error) {
+                        console.log("error: ", error);
+                    }
                 } else {
-                    return res.status(401).json({ msg: "Invalid credencials" })
+                    return res.status(401).json({ msg: "Invalid credentials" })
                 }
             });
         } catch (error) {
-            res.status(500).json({ error: 'Internal Server Error' });
+            res.status(400).json({ error });
         }
     }
 
@@ -152,7 +159,7 @@ export default class AdminServices {
                 name: "guest",
             });
         } else {
-            const Q = `SELECT * FROM user WHERE email = "${email}"`;
+            const Q = `SELECT * FROM user WHERE email = "${email.toLowerCase()}"`;
             this.DB.query(Q, (err, result) => {
                 if (err) throw err;
                 if (result[0]) {
@@ -179,8 +186,8 @@ export default class AdminServices {
                                 id: uuidv4(),
                                 first_name: firstName,
                                 last_name: lastName,
-                                username: userName,
-                                email,
+                                username: userName.toLowerCase(),
+                                email: email.toLowerCase(),
                                 password,
                                 dateCreated: new Date()
                                 // dateCreated: moment().format("MM ddd, YYYY HH:mm:ss a")
@@ -208,6 +215,7 @@ export default class AdminServices {
             lastName,
             userName,
             email,
+            phone,
             password,
             password1
         } = req.body;
@@ -218,6 +226,7 @@ export default class AdminServices {
             !lastName ||
             !userName ||
             !email ||
+            !phone ||
             !password ||
             !password1
         ) {
@@ -235,7 +244,7 @@ export default class AdminServices {
         if (errors.length > 0) {
             return res.status(401).json({ msg: "Invalid credencials", errors })
         } else {
-            const Q = `SELECT * FROM user WHERE email = "${email.toLowerCase()}"`;
+            const Q = `SELECT * FROM user WHERE email = "${email.toLowerCase()}" or phone="${phone}"`;
             this.DB.query(Q, (err, result) => {
                 if (err) return res.status(401).json({ msg: "Internal server error", err });
                 if (result[0]) {
@@ -252,14 +261,17 @@ export default class AdminServices {
                                 first_name: firstName,
                                 last_name: lastName,
                                 username: userName.toLowerCase(),
-                                email: email.toLowerC8ase(),
+                                email: email.toLowerCase(),
                                 password,
+                                phone,
                                 userType: "USER",
                                 dateCreated: new Date()
                                 // dateCreated: moment().format("MM ddd, YYYY HH:mm:ss a")
                             };
+                            console.log("here gotten", Options)
                             this.DB.query(Query, Options, (err, result) => {
                                 if (err) return res.status(401).json({ msg: "Invalid credencials error creating user", err });
+                                console.log(result)
                                 if (result) {
                                     return res.status(201).json({ msg: "User successfully created" })
                                 }
@@ -268,6 +280,23 @@ export default class AdminServices {
                     });
                 }
             });
+        }
+    }
+
+    userProfileService = (req, res, next) => {
+        const { sub } = req.user;
+        try {
+            const query = `SELECT * FROM user where id="${sub}" and is_deleted=0 `;
+            this.DB.query(query, (err, result) => {
+                if (err) return res.status(401).json({ msg: "User doesnt exist" });
+                delete result[0].password
+                return res.status(200).json({
+                    error: false,
+                    result: result[0],
+                })
+            })
+        } catch (error) {
+            return res.status(500).json({ error });
         }
     }
 

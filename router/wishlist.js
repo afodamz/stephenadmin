@@ -8,8 +8,9 @@ const wishlistServices = new WishlistServices(DB);
 
 WishlistRoutes.post('/add', authenticateUser, wishlistServices.addProductToWishlist);
 WishlistRoutes.get('/', authenticateUser, wishlistServices.getProductsInWishlst);
-WishlistRoutes.delete('/empty/:cart_id', authenticateUser, wishlistServices.emptyWishlist);
-WishlistRoutes.delete('/removeProduct/:item_id', authenticateUser, wishlistServices.removeProduct);
+WishlistRoutes.get('/public', wishlistServices.getWishlst);
+WishlistRoutes.delete('/empty', authenticateUser, wishlistServices.emptyWishlist);
+WishlistRoutes.delete('/removeProduct/:productId', authenticateUser, wishlistServices.removeProduct);
 
 
 export default WishlistRoutes;

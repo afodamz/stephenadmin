@@ -12,7 +12,7 @@ AuthRoutes.post("/forgot-password", forwardAuthenticated, authServices.forgotPas
 AuthRoutes.post("/user/forgot-password", authServices.forgotUserPasswordSubmitService)
 AuthRoutes.post("/register", forwardAuthenticated, authServices.registerSubmitService)
 AuthRoutes.post("/user/register", authServices.registerUserSubmitService)
-AuthRoutes.post("/user/profile", authenticateUser, authServices.registerUserSubmitService)
+AuthRoutes.get("/user/profile", authenticateUser, authServices.userProfileService)
 AuthRoutes.post("/refreshtoken", authServices.refreshtokenService)
 
 export default AuthRoutes;

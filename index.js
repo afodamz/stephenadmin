@@ -15,7 +15,8 @@ import CartRoutes from "./router/cart.js";
 import WishlistRoutes from "./router/wishlist.js";
 import passport from "passport";
 import bodyParser from 'body-parser'
-import fileUpload from 'express-fileupload'
+import fileUpload from 'express-fileupload';
+import cors from 'cors'
 
 // require("./config/passport")(passport);
 import passportConfig from "./config/passport.js";
@@ -69,6 +70,13 @@ app.use(function (req, res, next) {
     res.locals.error = req.flash("error");
     next();
   });
+
+  // cors
+  app.use(cors({
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
+    // origin: ['https://www.section.io', 'https://www.google.com/']
+    origin: '*'
+}));
 
   app.use((req, res, next) => {
     // Website you wish to allow to connect

@@ -9,6 +9,15 @@ export default class AdminServices {
         this.DB = DB;
     }
 
+//     `SELECT *
+//   FROM tbl
+//  WHERE date <= IF(? IS NOT NULL, ?, '2999-12-31')
+//    AND date >= IF(? IS NOT NULL, ?, '1000-01-01')
+//    AND (? IS NULL OR col1 = ?)
+//    AND (? IS NULL OR col2 = ?)
+//    AND (? IS NULL OR col3 = ?)
+//    AND (? IS NULL OR col4 = ?);`
+
     loginService = (req, res) => {
         // res.render("login", {
         //     name: "guest",

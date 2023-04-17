@@ -32,10 +32,14 @@ export default class WishlistServices {
                     };
                     this.DB.query(Q, Options, (err, result) => {
                         if (err) return res.status(401).json({ msg: "Error adding wishlist" });
-                        return res.status(200).json({
-                            error: false,
-                            result: Options,
-                        })
+                        const Q = `SELECT wishlist.*, products.* FROM wishlist join products on wishlist.productId=products.id WHERE userId = "${sub}" and products.is_deleted=0 and wishlist.is_deleted=0 `;
+                        this.DB.query(Q, (err, result) => {
+                            if (err) return res.status(500).json({ error: err });
+                            return res.status(200).json({
+                                error: false,
+                                result,
+                            })
+                        });
                     });
                 } else {
                     return res.status(401).json({ msg: "Product already added to wishlist", result: wishlist })
@@ -52,7 +56,28 @@ export default class WishlistServices {
         const { sub } = req.user;
         try {
             let errors = [];
-            const Q = `SELECT * FROM wishlist WHERE userId = "${sub}" and is_deleted=0`;
+            // const Q = `SELECT * FROM wishlist WHERE userId = "${sub}" and is_deleted=0
+            // join products on wishlist.productId = products.id`;
+            const Q = `SELECT wishlist.*, products.* FROM wishlist inner join products on wishlist.productId=products.id WHERE userId = "${sub}" and products.is_deleted=0 and wishlist.is_deleted=0 `;
+            this.DB.query(Q, (err, result) => {
+                if (err) return res.status(500).json({ error: err });
+                return res.status(200).json({
+                    error: false,
+                    result,
+                })
+            });
+        } catch (error) {
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    getWishlst = (req, res) => {
+        const { productIds } = req.query;
+        try {
+            let errors = [];
+            // const Q = `SELECT * FROM wishlist WHERE userId = "${sub}" and is_deleted=0
+            // join products on wishlist.productId = products.id`;
+            const Q = `SELECT wishlist.*, products.* FROM wishlist join products on wishlist.productId=products.id WHERE userId IN ("${productIds}") and products.is_deleted=0 and wishlist.is_deleted=0 `;
             this.DB.query(Q, (err, result) => {
                 if (err) return res.status(500).json({ error: err });
                 return res.status(200).json({
@@ -66,16 +91,26 @@ export default class WishlistServices {
     }
 
     removeProduct = (req, res) => {
-        const productId = req.params;
+        const {productId} = req.params;
         const { sub } = req.user;
-        const Q = `UPDATE wishlist SET is_seleted=1 where productId=${productId} AND userId=${sub}`;
-
+        const Q = `UPDATE wishlist SET is_deleted=1 where productId='${productId}' AND userId='${sub}'`;
+        console.log('Q', Q)
         this.DB.query(Q, (err, result) => {
-            if (err) return res.status(401).json({ msg: "Error adding cart" });
-            return res.status(200).json({
-                error: false,
-                result: Options,
-            })
+            if (err) {
+                console.log('err', err)
+                return res.status(401).json({ msg: "Error removing wishlist" });}
+            console.log('result', result)
+            this.DB.query(Q, (err, result) => {
+                if (err) return res.status(401).json({ msg: "Error getting wishlist" });
+                const Q = `SELECT wishlist.*, products.* FROM wishlist inner join products on wishlist.productId=products.id WHERE userId = "${sub}" and products.is_deleted=0 and wishlist.is_deleted=0 `;
+                this.DB.query(Q, (err, result) => {
+                    if (err) return res.status(500).json({ error: err });
+                    return res.status(200).json({
+                        error: false,
+                        result,
+                    })
+                });
+            });
         });
     }
 
@@ -85,10 +120,17 @@ export default class WishlistServices {
 
         this.DB.query(Q, Options, (err, result) => {
             if (err) return res.status(401).json({ msg: "Error adding cart" });
-            return res.status(200).json({
-                error: false,
-                result: Options,
-            })
+            this.DB.query(Q, Options, (err, result) => {
+                if (err) return res.status(401).json({ msg: "Error adding wishlist" });
+                const Q = `SELECT wishlist.*, products.* FROM wishlist join products on wishlist.productId=products.id WHERE userId = "${sub}" and products.is_deleted=0 and wishlist.is_deleted=0 `;
+                this.DB.query(Q, (err, result) => {
+                    if (err) return res.status(500).json({ error: err });
+                    return res.status(200).json({
+                        error: false,
+                        result,
+                    })
+                });
+            });
         });
     }
 
